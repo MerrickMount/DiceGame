@@ -7,8 +7,8 @@ namespace DiceGame
     {
         static void Main(string[] args)
         {
-            
-            double betType, userDecision, timesPlayed;
+            string userDecision;
+            double betType, timesPlayed;
             double userBalance, userBet, userGuess, dieTotal, userWinnings;
             userBalance = 100;
             timesPlayed = 0;
@@ -16,9 +16,9 @@ namespace DiceGame
             while (userBalance > 0)
             {
                 Console.WriteLine($"You have a balance of {userBalance.ToString("C")}");
-                Console.WriteLine("if you want to exit type 1 if you would like to continue type 2");
-                userDecision = double.Parse(Console.ReadLine());
-                if (userDecision == 1)
+                Console.WriteLine("Click enter to continue. If you would like to exit press 1");
+                userDecision = Console.ReadLine();
+                if (userDecision == "1")
                 {
                     double userProfit;
                     userProfit = userBalance - 100;
@@ -32,24 +32,12 @@ namespace DiceGame
                     userBalance = userBalance - userBet;
                     Console.WriteLine("What bet type would you like to do?");
                     Thread.Sleep(1000);
-                    Console.WriteLine("Here are the options: Double (A win is a 2x bet amount + bet).");
-                    Console.WriteLine("Even (A win is a 1x bet amount + bet).");
-                    Console.WriteLine("Half (A win is a 0.5x bet amount + bet).");
-                    Console.WriteLine(" To select Double enter 1, to select Even enter 2, to select Half enter 3");
-                    betType = double.Parse(Console.ReadLine());
-                    if (betType == 1)
-                    {
-                        userWinnings = (userBet * 3);
-                    }
-                    if (betType == 2)
-                    {
-                        userWinnings = (userBet * 2);
-                    }
-                    if (betType == 3)
-                    {
-                        userWinnings = (userBet * 1.5);
-                    }
-                    Console.WriteLine("What number are you betting on?");
+                    Console.WriteLine("Here are the options:");
+                    Thread.Sleep(500);
+                    Console.WriteLine("1: Double (A win is a 2x bet amount + bet).");
+                    Console.WriteLine("2: Even Sum (A win is a 1x bet amount + bet).");
+                    Console.WriteLine("3: Odd Sum (A win is a 1x bet amount + bet).");
+                    Console.WriteLine("4: Not Double (A win is 0.5x bet amount + bet");
                     userGuess = double.Parse(Console.ReadLine());
                     die die1 = new die();
                     die die2 = new die();
@@ -65,39 +53,51 @@ namespace DiceGame
                     dieTotal = die1.Roll + die2.Roll;
                     Console.WriteLine($"The Total is {dieTotal}");
 
-                    if (userGuess == dieTotal)
+                    if ((die1.Roll == die2.Roll) && userGuess == 1)
                     {
-                        if (betType == 1)
-                        {
-                            userWinnings = (userBet * 3);
-                            Console.WriteLine("You guessed right");
-                            Console.WriteLine($"You win {userWinnings}");
-                            timesPlayed++;
-                        }
-                        if (betType == 2)
-                        {
-                            userWinnings = (userBet * 2);
-                            Console.WriteLine("You guessed right");
-                            Console.WriteLine($"You win {userWinnings}");
-                            timesPlayed++;
-                        }
-                        if (betType == 3)
-                        {
-                            
-                            userWinnings = (userBet * 1.5);
-                            Console.WriteLine("You guessed right");
-                            Console.WriteLine($"You win {userWinnings.ToString("C")}");
-                            userBalance = userBalance + userWinnings;
-                            timesPlayed++;
-                        }
+                        userWinnings = (userBet * 3);
+                        Console.WriteLine("You guessed right");
+                        Console.WriteLine($"You win {userWinnings}");
+                        userBalance = userBalance + userWinnings;
+                        timesPlayed++;
+                        Thread.Sleep(2000);
+                    }
+                    else if ((dieTotal == 2 || dieTotal == 4 || dieTotal == 6 || dieTotal == 8 || dieTotal == 10 || dieTotal == 12) && userGuess == 2)
+                    {
+                        userWinnings = (userBet * 2);
+                        Console.WriteLine("You guessed right");
+                        Console.WriteLine($"You win {userWinnings}");
+                        userBalance = userBalance + userWinnings;
+                        timesPlayed++;
+                        Thread.Sleep(2000);
 
+                    }
+                    else if ((dieTotal == 1 || dieTotal == 3 || dieTotal == 5 || dieTotal == 7 || dieTotal == 9 || dieTotal == 11) && userGuess == 3)
+                    {
+                        userWinnings = (userBet * 2);
+                        Console.WriteLine("You guessed right");
+                        Console.WriteLine($"You win {userWinnings.ToString("C")}");
+                        userBalance = userBalance + userWinnings;
+                        timesPlayed++;
+                        Thread.Sleep(2000);
+
+                    }
+                    else if ((die1.Roll != die2.Roll) && userGuess == 4)
+                    {
+                        userWinnings = (userBet * 1.5);
+                        Console.WriteLine("You guessed right");
+                        Console.WriteLine($"You win {userWinnings.ToString("C")}");
+                        userBalance = userBalance + userWinnings;
+                        timesPlayed++;
+                        Thread.Sleep(2000);
                     }
                     else
                     {
-                        Console.WriteLine("You did not guess the right number. Try again");
-                        Thread.Sleep(1000);
+                        Console.WriteLine("You did not guess right");
                         timesPlayed++;
+                        Thread.Sleep(2000);
                     }
+
                 }
 
             }
